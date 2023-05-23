@@ -7,5 +7,17 @@ const getGames = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
+const createGame = (game) => new Promise((resolve, reject) => {
+  fetch("", {})
+    .then()
+    .catch();
+});
+
+const getGameTypes = () => new Promise((resolve, reject) => {
+  fetch("", {})
+    .then()
+    .catch();
+});
+
 // eslint-disable-next-line import/prefer-default-export
-export { getGames };
+export { getGames, createGame, getGameTypes };
