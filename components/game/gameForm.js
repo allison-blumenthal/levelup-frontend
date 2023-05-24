@@ -71,8 +71,8 @@ const GameForm = ({ user }) => {
             {
                 gameTypes.map((gameType) => (
                   <option
-                    key={gameType.pk}
-                    value={gameType.pk}
+                    key={gameType.id}
+                    value={gameType.id}
                   >
                     {gameType.label}
                   </option>
