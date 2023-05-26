@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { Button, Form } from 'react-bootstrap';
 import { createEvent } from '../../utils/data/eventData';
@@ -11,9 +10,10 @@ const initialState = {
   date: '',
   time: '',
   gameId: 0,
+  userId: 0,
 };
 
-const EventForm = ({ user }) => {
+const EventForm = () => {
   const [games, setGames] = useState([]);
   const [organizers, setOrganizers] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(initialState);
@@ -40,7 +40,7 @@ const EventForm = ({ user }) => {
       date: currentEvent.date,
       time: currentEvent.time,
       gameId: Number(currentEvent.gameId),
-      organizer: user.uid,
+      userId: Number(currentEvent.userId),
     };
 
     createEvent(event).then(() => router.push('/events'));
@@ -68,20 +68,20 @@ const EventForm = ({ user }) => {
           <Form.Label>Event Description</Form.Label>
           <Form.Control name="description" required value={currentEvent.description} onChange={handleChange} />
 
-          <Form.Label>Date</Form.Label>
+          <Form.Label>Date (YYYY-MM-DD)</Form.Label>
           <Form.Control name="date" required value={currentEvent.date} onChange={handleChange} />
 
-          <Form.Label>Time</Form.Label>
+          <Form.Label>Time (HH:MM::SS)</Form.Label>
           <Form.Control name="time" required value={currentEvent.time} onChange={handleChange} />
 
           <Form.Label>Organizer</Form.Label>
-          <Form.Select name="userId" required value={currentEvent.organizer} onChange={handleChange}>
+          <Form.Select name="userId" required value={currentEvent.userId} onChange={handleChange}>
             <option value="">Select organizer:</option>
             {
             organizers.map((organizer) => (
               <option
                 key={organizer.id}
-                value={organizer.uid}
+                value={organizer.id}
               >
                 {organizer.bio}
               </option>
@@ -95,12 +95,6 @@ const EventForm = ({ user }) => {
       </Form>
     </>
   );
-};
-
-EventForm.propTypes = {
-  user: PropTypes.shape({
-    uid: PropTypes.string.isRequired,
-  }).isRequired,
 };
 
 export default EventForm;
