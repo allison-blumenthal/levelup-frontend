@@ -14,9 +14,10 @@ function GameCard({ gameObj }) {
         <Card.Header>{gameObj.title}</Card.Header>
         <Card.Body>
           <Card.Title>By: {gameObj.maker}</Card.Title>
-          <Card.Text>{gameObj.numberOfPlayers} players needed</Card.Text>
+          <Card.Text>{gameObj.number_of_players} players needed</Card.Text>
+          <Card.Text>Type: {gameObj.game_type.label}</Card.Text>
         </Card.Body>
-        <Card.Footer className="text-muted">Skill Level: {gameObj.skillLevel}</Card.Footer>
+        <Card.Footer className="text-muted">Skill Level: {gameObj.skill_level}</Card.Footer>
         <Button
           onClick={() => {
             router.push(`/games/edit/${gameObj.id}`);
@@ -30,11 +31,14 @@ function GameCard({ gameObj }) {
 
 GameCard.propTypes = {
   gameObj: PropTypes.shape({
-    id: PropTypes.string.isRequired,
+    id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     maker: PropTypes.string.isRequired,
-    numberOfPlayers: PropTypes.number.isRequired,
-    skillLevel: PropTypes.number.isRequired,
+    number_of_players: PropTypes.number.isRequired,
+    skill_level: PropTypes.number.isRequired,
+    game_type: PropTypes.shape({
+      label: PropTypes.string.isRequired,
+    }),
   }).isRequired,
 };
 

@@ -23,6 +23,7 @@ export default function ViewGame() {
       <h2>Made by: {gameDetails.maker}</h2>
       <h2>Number of Players: {gameDetails.number_of_players}</h2>
       <h2>Skill Level: {gameDetails.skill_level}</h2>
+      <h2>GameType: {gameDetails.game_type.label}</h2>
     </>
   );
 }
