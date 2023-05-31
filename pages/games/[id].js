@@ -12,6 +12,8 @@ export default function ViewGame() {
     getSingleGame(id).then(setGameDetails);
   };
 
+  console.warn(gameDetails);
+
   useEffect(() => {
     getGameDetails();
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -23,7 +25,7 @@ export default function ViewGame() {
       <h2>Made by: {gameDetails.maker}</h2>
       <h2>Number of Players: {gameDetails.number_of_players}</h2>
       <h2>Skill Level: {gameDetails.skill_level}</h2>
-      <h2>GameType: {gameDetails.game_type.label}</h2>
+      <h2>GameType: {gameDetails.game_type?.label}</h2>
     </>
   );
 }

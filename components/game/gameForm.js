@@ -10,11 +10,10 @@ const initialState = {
   numberOfPlayers: 0,
   title: '',
   maker: '',
-  gameTypeId: 0,
-  id: null,
+  gameType: '',
 };
 
-const GameForm = ({ gameObj }) => {
+function GameForm({ gameObj }) {
   const [gameTypes, setGameTypes] = useState([]);
   /*
   Since the input fields are bound to the values of
@@ -32,11 +31,11 @@ const GameForm = ({ gameObj }) => {
     if (gameObj.id) {
       setCurrentGame({
         id: gameObj.id,
-        gameType: gameObj.game_type.id,
         maker: gameObj.maker,
         title: gameObj.title,
         numberOfPlayers: gameObj.number_of_players,
         skillLevel: gameObj.skill_level,
+        gameType: gameObj.game_type?.id,
         userId: user.uid,
       });
     } // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -61,12 +60,13 @@ const GameForm = ({ gameObj }) => {
       const updatedGame = {
         id: gameObj.id,
         maker: currentGame.maker,
-        userId: user.uid,
         title: currentGame.title,
         numberOfPlayers: Number(currentGame.numberOfPlayers),
         skillLevel: Number(currentGame.skillLevel),
-        gameType: Number(currentGame.gameTypeId),
+        gameType: Number(currentGame.gameType),
+        userId: user.uid,
       };
+
       updateGame(updatedGame).then(() => router.push(`/games/${gameObj.id}`));
     } else {
       const game = {
@@ -74,7 +74,7 @@ const GameForm = ({ gameObj }) => {
         title: currentGame.title,
         numberOfPlayers: Number(currentGame.numberOfPlayers),
         skillLevel: Number(currentGame.skillLevel),
-        gameType: Number(currentGame.gameTypeId),
+        gameTypeId: Number(currentGame.gameType),
         userId: user.uid,
       };
 
@@ -87,16 +87,21 @@ const GameForm = ({ gameObj }) => {
     <>
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
+
           <Form.Label>Title</Form.Label>
           <Form.Control name="title" required value={currentGame.title} onChange={handleChange} />
+
           <Form.Label>Maker</Form.Label>
           <Form.Control name="maker" required value={currentGame.maker} onChange={handleChange} />
+
           <Form.Label>Number of Players</Form.Label>
           <Form.Control name="numberOfPlayers" required value={currentGame.numberOfPlayers} onChange={handleChange} />
+
           <Form.Label>Skill Level</Form.Label>
           <Form.Control name="skillLevel" required value={currentGame.skillLevel} onChange={handleChange} />
+
           <Form.Label>Game Type</Form.Label>
-          <Form.Select name="gameTypeId" required value={currentGame.gameTypeId} onChange={handleChange}>
+          <Form.Select name="gameType" required value={currentGame.gameType} onChange={handleChange}>
             <option value="">Select game type:</option>
             {
                 gameTypes.map((gameType) => (
@@ -109,6 +114,7 @@ const GameForm = ({ gameObj }) => {
                 ))
               }
           </Form.Select>
+
         </Form.Group>
         <Button variant="primary" type="submit">
           Submit
@@ -116,20 +122,18 @@ const GameForm = ({ gameObj }) => {
       </Form>
     </>
   );
-};
+}
 
 GameForm.propTypes = {
   gameObj: PropTypes.shape({
     id: PropTypes.number,
-    numberOfPlayers: PropTypes.number,
-    skillLevel: PropTypes.number,
-    gameTypeId: PropTypes.number,
-    maker: PropTypes.string,
-    title: PropTypes.string,
     number_of_players: PropTypes.number,
     skill_level: PropTypes.number,
+    maker: PropTypes.string,
+    title: PropTypes.string,
     game_type: PropTypes.shape({
       id: PropTypes.number,
+      label: PropTypes.string,
     }),
   }),
 };
