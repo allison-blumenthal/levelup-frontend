@@ -2,11 +2,16 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
+import { deleteEvent } from '../../utils/data/eventData';
 
-function EventCard({ eventObj }) {
+function EventCard({ eventObj, onUpdate }) {
   const router = useRouter();
 
-  console.warn(eventObj);
+  const deleteThisEvent = () => {
+    if (window.confirm('Delete this event?')) {
+      deleteEvent(eventObj.id).then(() => onUpdate());
+    }
+  };
 
   return (
     <>
@@ -21,8 +26,14 @@ function EventCard({ eventObj }) {
           onClick={() => {
             router.push(`/events/edit/${eventObj.id}`);
           }}
-        >Edit Game
+        >Edit
         </Button>
+        <Button
+          onClick={deleteThisEvent}
+        >
+          Delete
+        </Button>
+
       </Card>
     </>
   );
@@ -41,6 +52,7 @@ EventCard.propTypes = {
       bio: PropTypes.string.isRequired,
     }),
   }).isRequired,
+  onUpdate: PropTypes.func.isRequired,
 };
 
 export default EventCard;
