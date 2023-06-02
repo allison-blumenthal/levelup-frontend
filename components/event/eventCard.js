@@ -1,13 +1,8 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import { Card, Button } from 'react-bootstrap';
-import { useRouter } from 'next/router';
+import { Card } from 'react-bootstrap';
 
 function EventCard({ eventObj }) {
-  const router = useRouter();
-
-  console.warn(eventObj);
-
   return (
     <>
       <Card className="text-center">
@@ -17,12 +12,6 @@ function EventCard({ eventObj }) {
           <Card.Text>{eventObj.description}</Card.Text>
         </Card.Body>
         <Card.Footer className="text-muted">Date: {eventObj.date} Time: {eventObj.time}</Card.Footer>
-        <Button
-          onClick={() => {
-            router.push(`/events/edit/${eventObj.id}`);
-          }}
-        >Edit Game
-        </Button>
       </Card>
     </>
   );
