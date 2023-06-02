@@ -31,7 +31,7 @@ function EventForm({ eventObj }) {
         date: eventObj.date,
         time: eventObj.time,
         game: eventObj.game?.id,
-        userId: eventObj.organizer.id,
+        userId: eventObj.organizer.uid,
       });
     }
   }, [eventObj]);
@@ -56,7 +56,7 @@ function EventForm({ eventObj }) {
         date: currentEvent.date,
         time: currentEvent.time,
         game: Number(currentEvent.game),
-        userId: currentEvent.organizer.id,
+        userId: currentEvent.userId,
       };
 
       updateEvent(updatedEvent).then(() => router.push(`/events/${eventObj.id}`));
@@ -66,7 +66,7 @@ function EventForm({ eventObj }) {
         date: currentEvent.date,
         time: currentEvent.time,
         game: Number(currentEvent.game),
-        userId: currentEvent.organizer?.id,
+        userId: currentEvent.userId,
       };
 
       createEvent(event).then(() => router.push('/events'));
@@ -107,8 +107,8 @@ function EventForm({ eventObj }) {
             {
             organizers.map((organizer) => (
               <option
-                key={organizer.id}
-                value={organizer.id}
+                key={organizer.uid}
+                value={organizer.uid}
               >
                 {organizer.bio}
               </option>
@@ -136,6 +136,7 @@ EventForm.propTypes = {
     }),
     organizer: PropTypes.shape({
       id: PropTypes.number,
+      uid: PropTypes.string,
       bio: PropTypes.string,
     }),
   }),
