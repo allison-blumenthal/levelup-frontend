@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import EventCard from '../../components/event/eventCard';
-import { getEvents } from '../../utils/data/eventData';
+import { getEvents, joinEvent, leaveEvent } from '../../utils/data/eventData';
 
 function EventsHome() {
   const [events, setEvents] = useState([]);
@@ -28,6 +28,21 @@ function EventsHome() {
       {events.map((event) => (
         <section key={`event--${event.id}`} className="event">
           <EventCard eventObj={event} onUpdate={getAllEvents} />
+          {
+            event.joined
+              ? (
+                <Button
+                  onClick={leaveEvent}
+                >Leave
+                </Button>
+              )
+              : (
+                <Button
+                  onClick={joinEvent}
+                >Join
+                </Button>
+              )
+          }
         </section>
       ))}
     </article>
