@@ -5,13 +5,14 @@ import PropTypes from 'prop-types';
 import { createEvent, updateEvent } from '../../utils/data/eventData';
 import { getGames } from '../../utils/data/gameData';
 import { getGamers } from '../../utils/data/gamerData';
+import { useAuth } from '../../utils/context/authContext';
 
 const initialState = {
   description: '',
   date: '',
   time: '',
-  game: 0,
-  userId: '',
+  gameId: 0,
+  organizerId: '',
 };
 
 function EventForm({ eventObj }) {
@@ -19,6 +20,7 @@ function EventForm({ eventObj }) {
   const [organizers, setOrganizers] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(initialState);
   const router = useRouter();
+  const { user } = useAuth();
 
   useEffect(() => {
     getGames().then(setGames);
@@ -30,11 +32,11 @@ function EventForm({ eventObj }) {
         description: eventObj.description,
         date: eventObj.date,
         time: eventObj.time,
-        game: eventObj.game?.id,
-        userId: eventObj.organizer.uid,
+        gameId: eventObj.game?.id,
+        organizerId: eventObj.organizer?.uid,
       });
     }
-  }, [eventObj]);
+  }, [eventObj, user]);
 
   console.warn(currentEvent);
 
@@ -55,8 +57,8 @@ function EventForm({ eventObj }) {
         description: currentEvent.description,
         date: currentEvent.date,
         time: currentEvent.time,
-        game: Number(currentEvent.game),
-        userId: currentEvent.userId,
+        gameId: Number(currentEvent.gameId),
+        organizerId: currentEvent.organizerId,
       };
 
       updateEvent(updatedEvent).then(() => router.push(`/events/${eventObj.id}`));
@@ -65,8 +67,8 @@ function EventForm({ eventObj }) {
         description: currentEvent.description,
         date: currentEvent.date,
         time: currentEvent.time,
-        game: Number(currentEvent.game),
-        userId: currentEvent.userId,
+        gameId: Number(currentEvent.gameId),
+        organizerId: currentEvent.organizerId,
       };
 
       createEvent(event).then(() => router.push('/events'));
@@ -78,7 +80,7 @@ function EventForm({ eventObj }) {
       <Form onSubmit={handleSubmit}>
         <Form.Group className="mb-3">
           <Form.Label>Game</Form.Label>
-          <Form.Select name="game" required value={currentEvent.game} onChange={handleChange}>
+          <Form.Select name="gameId" required value={currentEvent.gameId} onChange={handleChange}>
             <option value="">Select game:</option>
             {
                 games.map((game) => (
@@ -102,7 +104,7 @@ function EventForm({ eventObj }) {
           <Form.Control name="time" required value={currentEvent.time} onChange={handleChange} />
 
           <Form.Label>Organizer</Form.Label>
-          <Form.Select name="userId" required value={currentEvent.userId} onChange={handleChange}>
+          <Form.Select name="organizerId" required value={currentEvent.organizerId} onChange={handleChange}>
             <option value="">Select organizer:</option>
             {
             organizers.map((organizer) => (
@@ -133,6 +135,7 @@ EventForm.propTypes = {
     time: PropTypes.string,
     game: PropTypes.shape({
       id: PropTypes.number,
+      title: PropTypes.string,
     }),
     organizer: PropTypes.shape({
       id: PropTypes.number,

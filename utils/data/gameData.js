@@ -7,11 +7,12 @@ const getGames = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const createGame = (game) => new Promise((resolve, reject) => {
+const createGame = (game, uid) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/games`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `${uid}`,
     },
     body: JSON.stringify(game),
   })

@@ -2,19 +2,22 @@ import React, { useEffect, useState } from 'react';
 import { Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
 import EventCard from '../../components/event/eventCard';
-import { getEvents, joinEvent, leaveEvent } from '../../utils/data/eventData';
+import { getEvents } from '../../utils/data/eventData';
+import { useAuth } from '../../utils/context/authContext';
 
 function EventsHome() {
   const [events, setEvents] = useState([]);
   const router = useRouter();
+  const { user } = useAuth();
 
   const getAllEvents = () => {
-    getEvents().then((data) => setEvents(data));
+    getEvents(user.uid).then(setEvents);
   };
 
   useEffect(() => {
     getAllEvents();
-  }, []);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   return (
     <article className="events">
@@ -27,22 +30,7 @@ function EventsHome() {
       </Button>
       {events.map((event) => (
         <section key={`event--${event.id}`} className="event">
-          <EventCard eventObj={event} onUpdate={getAllEvents} />
-          {
-            event.joined
-              ? (
-                <Button
-                  onClick={leaveEvent}
-                >Leave
-                </Button>
-              )
-              : (
-                <Button
-                  onClick={joinEvent}
-                >Join
-                </Button>
-              )
-          }
+          <EventCard eventObj={event} onUpdate={getAllEvents} joined={event.joined} />
         </section>
       ))}
     </article>

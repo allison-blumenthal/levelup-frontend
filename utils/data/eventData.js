@@ -13,11 +13,12 @@ const getEvents = (uid) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const createEvent = (event) => new Promise((resolve, reject) => {
+const createEvent = (event, uid) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/events`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `${uid}`,
     },
     body: JSON.stringify(event),
   })
@@ -47,11 +48,12 @@ const getEventOrganizers = () => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const updateEvent = (payload) => new Promise((resolve, reject) => {
+const updateEvent = (payload, uid) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/events/${payload.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `${uid}`,
     },
     body: JSON.stringify(payload),
   })
@@ -71,15 +73,14 @@ const deleteEvent = (id) => new Promise((resolve, reject) => {
 });
 
 const joinEvent = (eventId, uid) => new Promise((resolve, reject) => {
-  fetch(`$clientCredentials.databaseURL}/events/${eventId}/signup`, {
+  fetch(`${clientCredentials.databaseURL}/events/${eventId}/signup`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `${uid}`,
     },
   })
-    .then((response) => response.json())
-    .then(resolve)
+    .then((response) => resolve(response.json()))
     .catch(reject);
 });
 

@@ -2,15 +2,25 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useRouter } from 'next/router';
-import { deleteEvent } from '../../utils/data/eventData';
+import { deleteEvent, joinEvent, leaveEvent } from '../../utils/data/eventData';
+import { useAuth } from '../../utils/context/authContext';
 
 function EventCard({ eventObj, onUpdate }) {
   const router = useRouter();
+  const { user } = useAuth();
 
   const deleteThisEvent = () => {
     if (window.confirm('Delete this event?')) {
       deleteEvent(eventObj.id).then(() => onUpdate());
     }
+  };
+
+  const join = () => {
+    joinEvent(eventObj.id, user.uid).then(() => onUpdate());
+  };
+
+  const leave = () => {
+    leaveEvent(eventObj.id, user.uid).then(() => onUpdate());
   };
 
   return (
@@ -33,6 +43,18 @@ function EventCard({ eventObj, onUpdate }) {
         >
           Delete
         </Button>
+        {eventObj.joined ? (
+          <Button
+            onClick={leave}
+          >Leave
+          </Button>
+        )
+          : (
+            <Button
+              onClick={join}
+            >Join
+            </Button>
+          )}
 
       </Card>
     </>
@@ -43,6 +65,7 @@ EventCard.propTypes = {
   eventObj: PropTypes.shape({
     id: PropTypes.number.isRequired,
     game: PropTypes.shape({
+      id: PropTypes.number.isRequired,
       title: PropTypes.string.isRequired,
     }),
     description: PropTypes.string.isRequired,
@@ -51,6 +74,7 @@ EventCard.propTypes = {
     organizer: PropTypes.shape({
       bio: PropTypes.string.isRequired,
     }),
+    joined: PropTypes.bool.isRequired,
   }).isRequired,
   onUpdate: PropTypes.func.isRequired,
 };
