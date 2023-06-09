@@ -11,7 +11,7 @@ function EventsHome() {
   const { user } = useAuth();
 
   const getAllEvents = () => {
-    getEvents(user.uid).then(setEvents);
+    getEvents(user.uid).then((data) => setEvents(data));
   };
 
   useEffect(() => {
