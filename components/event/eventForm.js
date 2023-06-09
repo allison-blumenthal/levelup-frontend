@@ -26,6 +26,8 @@ function EventForm({ eventObj }) {
     getGames().then(setGames);
     getGamers().then(setOrganizers);
 
+    console.warn(organizers);
+
     if (eventObj.id) {
       setCurrentEvent({
         id: eventObj.id,
