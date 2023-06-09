@@ -11,8 +11,8 @@ const initialState = {
   description: '',
   date: '',
   time: '',
-  game: {},
-  organizer: {},
+  gameId: 0,
+  userId: '',
 };
 
 function EventForm({ eventObj }) {
@@ -33,12 +33,10 @@ function EventForm({ eventObj }) {
         date: eventObj.date,
         time: eventObj.time,
         gameId: eventObj.game.id,
-        organizerUID: eventObj.organizer.uid,
+        userId: eventObj.organizer.uid,
       });
     }
   }, [eventObj, user]);
-
-  console.warn(eventObj);
 
   // console.warn(currentEvent);
 
@@ -59,8 +57,8 @@ function EventForm({ eventObj }) {
         description: currentEvent.description,
         date: currentEvent.date,
         time: currentEvent.time,
-        game: currentEvent.gameId,
-        organizer: currentEvent.organizerUID,
+        gameId: currentEvent.gameId,
+        userId: currentEvent.userId,
       };
 
       updateEvent(updatedEvent).then(() => router.push(`/events/${eventObj.id}`));
@@ -69,9 +67,11 @@ function EventForm({ eventObj }) {
         description: currentEvent.description,
         date: currentEvent.date,
         time: currentEvent.time,
-        game: currentEvent.gameId,
-        organizer: currentEvent.organizerUID,
+        gameId: currentEvent.gameId,
+        userId: currentEvent.userId,
       };
+
+      console.warn(event);
 
       createEvent(event).then(() => router.push('/events'));
     }
@@ -106,7 +106,7 @@ function EventForm({ eventObj }) {
           <Form.Control name="time" required value={currentEvent.time} onChange={handleChange} />
 
           <Form.Label>Organizer</Form.Label>
-          <Form.Select name="organizerId" required value={currentEvent.organizerUID} onChange={handleChange}>
+          <Form.Select name="userId" required value={currentEvent.userId} onChange={handleChange}>
             <option value="">Select organizer:</option>
             {
             organizers.map((organizer) => (
