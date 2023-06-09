@@ -11,8 +11,8 @@ const initialState = {
   description: '',
   date: '',
   time: '',
-  gameId: 0,
-  organizerId: '',
+  game: {},
+  organizer: {},
 };
 
 function EventForm({ eventObj }) {
@@ -32,13 +32,15 @@ function EventForm({ eventObj }) {
         description: eventObj.description,
         date: eventObj.date,
         time: eventObj.time,
-        gameId: eventObj.game?.id,
-        organizerId: eventObj.organizer?.uid,
+        gameId: eventObj.game.id,
+        organizerUID: eventObj.organizer.uid,
       });
     }
   }, [eventObj, user]);
 
-  console.warn(currentEvent);
+  console.warn(eventObj);
+
+  // console.warn(currentEvent);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -57,8 +59,8 @@ function EventForm({ eventObj }) {
         description: currentEvent.description,
         date: currentEvent.date,
         time: currentEvent.time,
-        gameId: Number(currentEvent.gameId),
-        organizerId: currentEvent.organizerId,
+        game: currentEvent.gameId,
+        organizer: currentEvent.organizerUID,
       };
 
       updateEvent(updatedEvent).then(() => router.push(`/events/${eventObj.id}`));
@@ -67,8 +69,8 @@ function EventForm({ eventObj }) {
         description: currentEvent.description,
         date: currentEvent.date,
         time: currentEvent.time,
-        gameId: Number(currentEvent.gameId),
-        organizerId: currentEvent.organizerId,
+        game: currentEvent.gameId,
+        organizer: currentEvent.organizerUID,
       };
 
       createEvent(event).then(() => router.push('/events'));
@@ -104,7 +106,7 @@ function EventForm({ eventObj }) {
           <Form.Control name="time" required value={currentEvent.time} onChange={handleChange} />
 
           <Form.Label>Organizer</Form.Label>
-          <Form.Select name="organizerId" required value={currentEvent.organizerId} onChange={handleChange}>
+          <Form.Select name="organizerId" required value={currentEvent.organizerUID} onChange={handleChange}>
             <option value="">Select organizer:</option>
             {
             organizers.map((organizer) => (

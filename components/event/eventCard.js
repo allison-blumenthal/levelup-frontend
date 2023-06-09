@@ -23,6 +23,8 @@ function EventCard({ eventObj, onUpdate }) {
     leaveEvent(eventObj.id, user.uid).then(() => onUpdate());
   };
 
+  console.warn(eventObj);
+
   return (
     <>
       <Card className="text-center">
