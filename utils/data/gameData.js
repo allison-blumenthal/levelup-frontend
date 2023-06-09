@@ -35,11 +35,12 @@ const getSingleGame = (id) => new Promise((resolve, reject) => {
     .catch(reject);
 });
 
-const updateGame = (payload) => new Promise((resolve, reject) => {
+const updateGame = (payload, uid) => new Promise((resolve, reject) => {
   fetch(`${clientCredentials.databaseURL}/games/${payload.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `${uid}`,
     },
     body: JSON.stringify(payload),
   })
