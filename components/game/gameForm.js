@@ -10,7 +10,7 @@ const initialState = {
   numberOfPlayers: 0,
   title: '',
   maker: '',
-  gameType: '',
+  gameType: 0,
 };
 
 function GameForm({ gameObj }) {
@@ -41,8 +41,6 @@ function GameForm({ gameObj }) {
     } // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameObj, user]);
 
-  console.warn(currentGame);
-
   const handleChange = (e) => {
     // TO-DO: Complete the onChange function
     const { name, value } = e.target;
@@ -67,19 +65,21 @@ function GameForm({ gameObj }) {
         userId: user.uid,
       };
 
-      updateGame(updatedGame).then(() => router.push(`/games/${gameObj.id}`));
+      updateGame(updatedGame, user.uid).then(() => router.push(`/games/${gameObj.id}`));
     } else {
       const game = {
         maker: currentGame.maker,
         title: currentGame.title,
         numberOfPlayers: Number(currentGame.numberOfPlayers),
         skillLevel: Number(currentGame.skillLevel),
-        gameTypeId: Number(currentGame.gameType),
+        gameType: Number(currentGame.gameType),
         userId: user.uid,
       };
 
+      console.warn(game);
+
       // Send POST request to your API
-      createGame(game).then(() => router.push('/games'));
+      createGame(game, user.uid).then(() => router.push('/games'));
     }
   };
 
