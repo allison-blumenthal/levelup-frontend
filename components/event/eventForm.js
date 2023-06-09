@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { createEvent, updateEvent } from '../../utils/data/eventData';
 import { getGames } from '../../utils/data/gameData';
 import { getGamers } from '../../utils/data/gamerData';
-// import { useAuth } from '../../utils/context/authContext';
+import { useAuth } from '../../utils/context/authContext';
 
 const initialState = {
   description: '',
@@ -20,7 +20,7 @@ function EventForm({ eventObj }) {
   const [organizers, setOrganizers] = useState([]);
   const [currentEvent, setCurrentEvent] = useState(initialState);
   const router = useRouter();
-  // const { user } = useAuth();
+  const { user } = useAuth();
 
   useEffect(() => {
     getGames().then(setGames);
@@ -61,7 +61,7 @@ function EventForm({ eventObj }) {
         userId: currentEvent.userId,
       };
 
-      updateEvent(updatedEvent).then(() => router.push(`/events/${eventObj.id}`));
+      updateEvent(updatedEvent, user.uid).then(() => router.push(`/events/${eventObj.id}`));
     } else {
       const event = {
         description: currentEvent.description,
@@ -73,7 +73,7 @@ function EventForm({ eventObj }) {
 
       console.warn(event);
 
-      createEvent(event).then(() => router.push('/events'));
+      createEvent(event, user.uid).then(() => router.push('/events'));
     }
   };
 
